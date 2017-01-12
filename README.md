@@ -2,7 +2,7 @@
 
 ## App Introduction
 
-It is a small web application for users to save their favourite movie to Local Storage, using React and omdbapi.
+It is a small web application for users to save their favourite movies to Local Storage, using React and omdbapi.
 Code is following airbnb's react rules, using airbnb's linter.
 
 ## Available Scripts
