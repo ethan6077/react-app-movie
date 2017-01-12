@@ -1,3 +1,10 @@
+# Movie App 
+
+## App Introduction
+
+It is a small web application for users to save their favourite movie to Local Storage, using React and omdbapi.
+Code is following airbnb's react rules, using airbnb's linter.
+
 ## Available Scripts
 
 In the project directory, you can run:
