@@ -18,10 +18,21 @@ class MovieItem extends Component {
 
   render() {
     return (
-      <li>
-        {this.props.id}&nbsp;&nbsp;{this.props.title}({this.props.year})
-        &nbsp;&nbsp;{this.props.rating}&nbsp;&nbsp;
-        <button id={this.props.id} onClick={this.props.rmMovie}>REMOVE</button>
+      <li className="list-group-item">
+        <div  className="row">
+          <div className="col-xs-8">
+            {this.props.id}&nbsp;&nbsp;{this.props.title}({this.props.year})
+            <br />
+            IMDB:&nbsp;{this.props.rating}&nbsp;&nbsp;
+          </div>
+          <div className="col-xs-4">
+            <button
+              className="btn btn-danger"
+              id={this.props.id}
+              onClick={this.props.rmMovie}
+            >REMOVE</button>
+          </div>
+        </div>
       </li>
     );
   }

@@ -12,7 +12,7 @@ class MovieList extends Component {
   render() {
     const movies = this.state.movies;
     return (
-      <ul>
+      <ul className="list-group">
         {movies.map(movie => <MovieItem
           key={movie.id}
           id={movie.id}

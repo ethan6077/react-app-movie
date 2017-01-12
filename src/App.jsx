@@ -64,8 +64,8 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>Welcome to Movie App</h1>
-        <input onKeyDown={this.update} />
+        <h1>Movie App</h1>
+        <input className="form-control inputlg" onKeyDown={this.update} />
         <p>{this.state.title}</p>
         <hr />
         <MovieList movies={this.state.movies} rmMovie={this.rmMovie} />
