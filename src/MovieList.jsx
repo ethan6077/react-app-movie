@@ -6,32 +6,58 @@ import '../public/style.css';
 class MovieList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      movies: this.props.movies,
-    };
+    if (props.movies.length === 0) {
+      this.state = {
+        movies: props.movies,
+        isMovieListEmpty: true,
+      };
+    } else {
+      this.state = {
+        movies: props.movies,
+        isMovieListEmpty: false,
+      };
+    }
+    // console.log('constructor');
+    // console.log(this.state.isMovieListEmpty);
     this.sortBySelectedMethod = this.sortBySelectedMethod.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.movies.length === 0) {
+      this.setState({
+        movies: nextProps.movies,
+        isMovieListEmpty: true,
+      });
+    } else {
+      this.setState({
+        movies: nextProps.movies,
+        isMovieListEmpty: false,
+      });
+    }
+    // console.log('componentWillReceiveProps');
+    // console.log(this.state.isMovieListEmpty);
+  }
+
   sortBySelectedMethod(e) {
-    console.log('soring movie list--------------->');
+    // console.log('soring movie list--------------->');
     let sortedMovieList = [];
     switch (e.target.value) {
       case 'Alphabetically':
-        console.log(e.target.value);
+        // console.log(e.target.value);
         sortedMovieList = ArraySort(this.state.movies, 'Title');
         this.setState({
           movies: sortedMovieList,
         });
         break;
       case 'Year':
-        console.log(e.target.value);
+        // console.log(e.target.value);
         sortedMovieList = ArraySort(this.state.movies, 'Year', { reverse: true });
         this.setState({
           movies: sortedMovieList,
         });
         break;
       case 'Rating':
-        console.log(e.target.value);
+        // console.log(e.target.value);
         sortedMovieList = ArraySort(this.state.movies, 'imdbRating', { reverse: true });
         this.setState({
           movies: sortedMovieList,
@@ -40,12 +66,28 @@ class MovieList extends Component {
       default:
         return null;
     }
+    return null;
   }
 
   render() {
+    const isMovieListEmpty = this.state.isMovieListEmpty;
+    // console.log('rending--------->');
+    // console.log(isMovieListEmpty);
+    let ButtonForClear = null;
+    if (isMovieListEmpty === true) {
+      ButtonForClear = (<button
+        className="btn btn-warning hidden"
+        onClick={this.props.clearAllMovies}
+      >Clear</button>);
+    } else {
+      ButtonForClear = (<button
+        className="btn btn-warning"
+        onClick={this.props.clearAllMovies}
+      >Clear</button>);
+    }
     const movies = this.state.movies;
-    console.log('rendering movie list--------------->');
-    console.log(movies);
+    // console.log('rendering movie list--------------->');
+    // console.log(movies);
     if (movies !== undefined && movies !== null && movies !== '' && movies !== []) {
       return (
         <div>
@@ -77,28 +119,25 @@ class MovieList extends Component {
             />)}
           </ul>
           <div className="btnForClearAllMovies">
-            <button
-              className="btn btn-warning"
-              onClick={this.props.clearAllMovies}
-            >Clear</button>
+            {ButtonForClear}
           </div>
           <hr />
         </div>
       );
     } else {
-      console.log('empty movies!');
+      // console.log('empty movies!');
       return null;
     }
   }
 }
 
 MovieList.propTypes = {
-  movies: React.PropTypes.arrayOf(React.PropTypes.object),
+  movies: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
   rmMovie: React.PropTypes.func.isRequired,
   clearAllMovies: React.PropTypes.func.isRequired,
 };
 
-MovieItem.defaultProps = {
+MovieList.defaultProps = {
   movies: [],
 };
 

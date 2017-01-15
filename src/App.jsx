@@ -61,17 +61,18 @@ class App extends React.Component {
         tempTitle: '',
         movies: this.state.movies,
       });
+      // clear the input DOM
       this.titleInput.value = '';
     });// end of client.get
   }
 
   rmMovie(e) {
-    console.log('Movie to remove------------>');
-    console.log(e.target.id);
+    // console.log('Movie to remove------------>');
+    // console.log(e.target.id);
     const mvIndexToRm = this.state.movies.findIndex(
       (mv) => { if (mv.imdbID === e.target.id) return mv; return null; });
     if (mvIndexToRm !== null) {
-      console.log(mvIndexToRm);
+      // console.log(mvIndexToRm);
       this.state.movies.splice(mvIndexToRm, 1);
     }
     // interact with LocalStorage
@@ -83,12 +84,12 @@ class App extends React.Component {
   }
 
   clearAllMovies() {
-    console.log('clearAllMovies---------->');
+    // console.log('clearAllMovies---------->');
     // interact with LocalStorage
     localStorage.clear();
     this.state.movies.splice(0);
     this.setState({
-      tempTitle: 'mjsdfh',
+      tempTitle: '',
       movies: this.state.movies,
     });
   }

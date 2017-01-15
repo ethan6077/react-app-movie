@@ -14,7 +14,7 @@ class MovieMatchedItem extends Component {
       <li className="list-group-item">
         <div className="row">
           <div className="col-xs-8">
-            {this.props.imdbID}&nbsp;&nbsp;{this.props.Title}
+            {this.props.Title}
           </div>
           <div className="col-xs-4">
             <button
