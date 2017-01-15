@@ -41,6 +41,6 @@ I have not sovled the cors problem. The app can only run in the web-security-dis
 ## Features
 
 * Functions including Autocomplete, localStorage and sorting
-* The app skeleton is created by "create-react-app", which accounts for 5% of the total code. All the rest of the code is coded manually.
-* following the airbnb's linter rules strictly
+* The app skeleton is created by "create-react-app"(React Framework Generator), which accounts for 5% of the total code. All the rest of the code is coded manually.
+* Following the airbnb's linter rules strictly
 * No Redux/Flux implementation
