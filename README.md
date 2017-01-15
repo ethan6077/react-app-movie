@@ -1,4 +1,4 @@
-# Movie App 
+# Movie App - Created By Ethan Zhang
 
 ## App Introduction
 
