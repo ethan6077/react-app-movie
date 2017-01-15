@@ -5,6 +5,7 @@
 It is a small web application for users to save their favourite movies to Local Storage, using React and omdbapi.
 Code is following airbnb's react rules, using airbnb's linter.
 
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -23,3 +24,8 @@ You will also see any lint errors in the console.
 In the project directory, you can run:
 
 ### `npm install`
+
+
+## Bug
+
+I have not sovled the cors problem. The app can only run in the web-security-disabled chrome, otherwise the response from omdbapi would be blocked.

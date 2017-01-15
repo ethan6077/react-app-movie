@@ -1,62 +1,94 @@
 import React from 'react';
+import NodeRestClient from 'node-rest-client';
+import localStorage from 'localStorage';
 import MovieList from './MovieList';
-// import logo from './logo.svg';
-// import './App.css';
+import MovieMatchedList from './MovieMatchedList';
 
-const moviesRawData = [
-  { id: '001', title: 'Chicken Burger', year: '1973', rating: '9.3' },
-  { id: '002', title: 'Beef Burger', year: '1999', rating: '4.5' },
-  { id: '003', title: 'Vegetable Sandwich', year: '2014', rating: '8.3' },
-  { id: '004', title: 'Fried Rice', year: '2016', rating: '7.8' },
-];
+
+// const moviesRawData = [
+//   { imdbID: '001', Title: 'Chicken Burger', Year: '1973', imdbRating: '9.3' },
+//   { imdbID: '002', Title: 'Beef Burger', Year: '1999', imdbRating: '4.5' },
+//   { imdbID: '003', Title: 'Vegetable Sandwich', Year: '2014', imdbRating: '8.3' },
+//   { imdbID: '004', Title: 'Fried Rice', Year: '2016', imdbRating: '7.8' },
+// ];
 
 class App extends React.Component {
   constructor(props) {
     super(props);
+    let moviesFromLocalStorage = '';
+    let moviesJson = [];
+    if (localStorage.getItem('movies') !== null) {
+      moviesFromLocalStorage = localStorage.getItem('movies');
+      moviesJson = JSON.parse(moviesFromLocalStorage);
+    }
     this.state = {
-      title: 'Movie Title',
-      movies: moviesRawData,
+      tempTitle: '',
+      movies: moviesJson,
     };
     this.update = this.update.bind(this);
     this.addMovie = this.addMovie.bind(this);
     this.rmMovie = this.rmMovie.bind(this);
+    this.clearAllMovies = this.clearAllMovies.bind(this);
   }
 
   update(e) {
     // call movie api
     this.setState({
-      title: e.target.value,
+      tempTitle: e.target.value,
     });
-
-    const ENTER_KEY = 13;
-    if (e.keyCode === ENTER_KEY) {
-      const movieJson = { id: '000', title: e.target.value, year: '0000', rating: '0.00' };
-      this.addMovie(movieJson);
-    }
   }
 
-  addMovie(mJson) {
-    // interact with LocalStorage
-    console.log('Movie to add: ' + mJson.title);
-    this.state.movies.push(mJson);
-    this.setState({
-      title: 'Movie Title',
-      movies: this.state.movies,
-    });
+  addMovie(e) {
+    // get the movie detail from omdbapi
+    console.log('Movie to add------------>');
+    console.log(e.target.id);
+    const Client = NodeRestClient.Client;
+    const client = new Client();
+    const imdbIdOfMovieToAdd = e.target.id;
+    client.get(`http://www.omdbapi.com/?i=${imdbIdOfMovieToAdd}&r=json`, (res) => {
+      console.log(res);
+      const mJson = {
+        imdbID: res.imdbID,
+        Title: res.Title,
+        Year: res.Year,
+        imdbRating: res.imdbRating,
+      };
+      console.log(mJson);
+      this.state.movies.push(mJson);
+      // interact with localStorage
+      localStorage.setItem('movies', JSON.stringify(this.state.movies));
+      this.setState({
+        tempTitle: '',
+        movies: this.state.movies,
+      });
+      this.titleInput.value = '';
+    });// end of client.get
   }
 
   rmMovie(e) {
-    // interact with LocalStorage
-    console.log('Movie to remove------------> ');
+    console.log('Movie to remove------------>');
     console.log(e.target.id);
-    const mvIndexToRm = moviesRawData.findIndex(
-      (mv) => { if (mv.id === e.target.id) return mv; return null; });
+    const mvIndexToRm = this.state.movies.findIndex(
+      (mv) => { if (mv.imdbID === e.target.id) return mv; return null; });
     if (mvIndexToRm !== null) {
       console.log(mvIndexToRm);
       this.state.movies.splice(mvIndexToRm, 1);
     }
+    // interact with LocalStorage
+    localStorage.setItem('movies', JSON.stringify(this.state.movies));
     this.setState({
-      title: 'Movie Title',
+      tempTitle: '',
+      movies: this.state.movies,
+    });
+  }
+
+  clearAllMovies() {
+    console.log('clearAllMovies---------->');
+    // interact with LocalStorage
+    localStorage.clear();
+    this.state.movies.splice(0);
+    this.setState({
+      tempTitle: 'mjsdfh',
       movies: this.state.movies,
     });
   }
@@ -64,11 +96,23 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>Movie App</h1>
-        <input className="form-control inputlg" onKeyDown={this.update} />
-        <p>{this.state.title}</p>
-        <hr />
-        <MovieList movies={this.state.movies} rmMovie={this.rmMovie} />
+        <h1 className="text-center">Movie App</h1>
+        <h2 className="text-center">Author: Ethan Zhang</h2>
+        <input
+          type="text"
+          className="form-control inputlg"
+          onKeyDown={this.update}
+          ref={(input) => { this.titleInput = input; }}
+        />
+        <MovieMatchedList
+          tempTitle={this.state.tempTitle}
+          addMovie={this.addMovie}
+        />
+        <MovieList
+          movies={this.state.movies}
+          rmMovie={this.rmMovie}
+          clearAllMovies={this.clearAllMovies}
+        />
       </div>
     );
   }
